@@ -1,17 +1,17 @@
 // src/components/TransactionComponent.js
 import React from 'react';
 
-const TransactionComponent = ({ transactions, onPageChange, totalPage }) => {
-    const currentPage = localStorage.getItem("currentPage")
+const TransactionComponent = ({ transactions, onPageChange,currentPage, totalPage }) => {
+    // const currentPage = Number(localStorage.getItem("currentPage"))
 
-    console.log("currentPage",currentPage,"totalPage",totalPage)
+    // console.log("currentPage",currentPage,"totalPage",totalPage)
 
 
     const handleNextPage = () => {
         console.log("currentPage",currentPage)
         if (currentPage<totalPage && currentPage >0){
-            localStorage.setItem("currentPage",currentPage+1)
-            onPageChange();
+            // localStorage.setItem("currentPage",Number(currentPage)+1)
+            onPageChange(currentPage+1);
         }else{
             console.log("Next button is disabled")
             alert("Current page and Next page is same page")
@@ -21,8 +21,9 @@ const TransactionComponent = ({ transactions, onPageChange, totalPage }) => {
 
     const handlePreviousPage = () => {
         if (currentPage!==1 && currentPage >1){
-            localStorage.setItem("currentPage",currentPage-1)
-            onPageChange();
+            // localStorage.setItem("currentPage",currentPage-1)
+            // console.log("localStorage.setItem(currentPage,currentPage-1)",localStorage.getItem("currentPage"))
+            onPageChange(currentPage-1);
         }else{
             console.log("Previous button is disabled")
             alert("Current page and Previous page is same page")
@@ -32,9 +33,9 @@ const TransactionComponent = ({ transactions, onPageChange, totalPage }) => {
     };
 
     const handleFirstPage = () => {
-        if (currentPage!==1 && currentPage >1){
-            localStorage.setItem("currentPage",1)
-            onPageChange();
+        if (currentPage > 1){
+            // localStorage.setItem("currentPage",1)
+            onPageChange(1);
         }else{
             console.log("First button is disabled")
             alert("Current page and First page is same page")
@@ -44,9 +45,9 @@ const TransactionComponent = ({ transactions, onPageChange, totalPage }) => {
     };
 
     const handleLastPage = (lastPage) => {
-        if (currentPage!==totalPage && currentPage >1){
-            localStorage.setItem("currentPage",lastPage)
-            onPageChange();
+        if (currentPage<totalPage){
+            // localStorage.setItem("currentPage",lastPage)
+            onPageChange(lastPage);
         }else{
             console.log("Last button is disabled")
             alert("Current page and Last page is same page")

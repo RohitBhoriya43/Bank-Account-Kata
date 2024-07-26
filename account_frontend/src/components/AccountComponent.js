@@ -14,12 +14,10 @@ const AccountComponent = ({baseUrl}) => {
     const [totalPage, setTotalPage] = useState(1);
     const [sortOrder, setSortOrder] = useState('desc');
     const [sortItem, setSortItem] = useState('-date');
-    const [filters, setFilters] = useState({
-        page_size:10,sort_order:"-date"
-    });
+    const [filters, setFilters] = useState({});
 
     useEffect(() => {
-        localStorage.setItem("currentPage",1)
+        // localStorage.setItem("currentPage",1)
         fetchAccounts();
     }, []);
 
@@ -40,8 +38,8 @@ const AccountComponent = ({baseUrl}) => {
         try{
             const params = new URLSearchParams()
             if (page) params.append("page_no",page)
-            if (filters.page_size) params.append("page_size",filters.page_size)
-            if (filters.sort_order) params.append("sort_order",filters.sort_order)
+            params.append("page_size",10)
+            if (sortItem) params.append("sort_order",sortItem)
             if (filters.date_from) params.append("date_from",filters.date_from)
             if (filters.date_to) params.append("date_from",filters.date_to)
             if (filters.transaction_type) params.append("transaction_type",filters.transaction_type)
@@ -102,9 +100,11 @@ const AccountComponent = ({baseUrl}) => {
 
     const handleSortOrderChange = (event) => {
         const sortValue = event.target.value
+        console.log("sort_order event",sortValue)
         const sortItems = sortValue==="asc"?"date":"-date"
-        setSortOrder(sortValue);
         setSortItem(sortItems)
+        setSortOrder(sortValue);
+        
         
     };
 
@@ -112,15 +112,13 @@ const AccountComponent = ({baseUrl}) => {
         console.log("filter event ",event)
         setFilters({
             ...filters,
-            page_size:10,
-            sort_order:sortItem,
             [event.target.name]: event.target.value,
         });
     };
 
-    const handlePageChange = () => {
+    const handlePageChange = (newPage) => {
         // console.log("newPage",newPage)
-        setPage(localStorage.getItem("currentPage"));
+        setPage(newPage);
         
     };
 
@@ -215,6 +213,7 @@ const AccountComponent = ({baseUrl}) => {
                 <TransactionComponent
                     transactions={transactions}
                     onPageChange={handlePageChange}
+                    currentPage = {page}
                     totalPage ={totalPage}
                 />
             )}

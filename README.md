@@ -129,6 +129,17 @@ Admin
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Enter the account_frontend folder
+
+```bash
+    cd account_frontend
+```
+
+## Install the node_modules folder 
+```bash
+    npm i
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
