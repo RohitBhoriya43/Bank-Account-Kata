@@ -33,16 +33,16 @@ class TransactionFilter(APIView):
         
     def filter_data(self,account_number,query):
         date_from = self.convert_date(query.get("date_from",None))
-        date_to = self.convert_date(query.get("date_to",None))
+        date_to = self.convert_date(query.get("date_to",None),True)
         print("date_from",date_from)
         transaction_type = query.get("transaction_type","All")
         data = {"account__iban":account_number}
         if date_from and not date_to:
             data.update({"date__gte":date_from})
         elif date_to and not date_from:
-            data.update({"date__lte":date_to})
+            data.update({"date__lt":date_to})
         elif date_to and date_from:
-            data.update({"date__gte":date_from,"date__lte":date_to})
+            data.update({"date__gte":date_from,"date__lt":date_to})
         
         if transaction_type == "deposit":
             data.update({"amount__startswith":"+"})
@@ -51,13 +51,13 @@ class TransactionFilter(APIView):
         
         return data
 
-    def convert_date(self,dt):
+    def convert_date(self,dt,date_to=None):
         if dt is None or dt == "":
             return dt
         try:
             # date = datetime.strptime(dt,"%Y-%m-%d")
             # print("date",date)
-            date = str(datetime.strptime(dt,"%Y-%m-%d"))
+            date = str(datetime.strptime(dt,"%Y-%m-%d") + datetime.timedelta(days=1) if date_to else "")
             replace_date= date.replace(" ","T")
             print("replace_date",replace_date)
 
